@@ -27,7 +27,7 @@ public class ProductService {
         return productRepository.findAll();
     }
     public Product getProductById(String productCode){
-        return productRepository.findProductsByProductCode(productCode);
+        return productRepository.findProductByProductCode(productCode);
     }
     public List<Product> findProductsByPriceOrSearchCriteria(String anyContent, BigDecimal lower, BigDecimal upper){
         if (lower.compareTo(upper) > 0) {
