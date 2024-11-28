@@ -27,7 +27,8 @@ public class ProductService {
         return productRepository.findAll();
     }
     public Product getProductById(String productCode){
-        return productRepository.findProductByProductCode(productCode);
+
+        return productRepository.findById(productCode).orElse(null);
     }
     public List<Product> findProductsByPriceOrSearchCriteria(String anyContent, BigDecimal lower, BigDecimal upper){
         if (lower.compareTo(upper) > 0) {
@@ -44,8 +45,8 @@ public class ProductService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Product Line not found: ", productLine));
 
         }
-        product.setProductLine(selectedLine); // ถ้่่ามี line ให้ set line
-        return productRepository.save(product); // update product
+        product.setProductLine(selectedLine);
+        return productRepository.save(product);
     }
 
     //TODO : Update Product

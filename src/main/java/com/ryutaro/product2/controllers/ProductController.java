@@ -28,7 +28,7 @@ public class ProductController {
     private List<String> getProductLines() {
         return productLineService.getAllProductLineId();
     }
-
+    //TODO: Read
     @GetMapping("")
     public String getAllProduct(Model model){
         model.addAttribute("products", productService.getAllProducts());
@@ -42,10 +42,23 @@ public class ProductController {
         model.addAttribute("product", product);
         return "product_details";
     }
+    @GetMapping("/searchByAnyContentOrPrice")
+    public String search(@RequestParam(required = false) String searchParam,
+                         @RequestParam(defaultValue = "10.0") Double lower,
+                         @RequestParam(defaultValue = "9999.99") Double upper, Model model) {
+        model.addAttribute("products", productService.findProductsByPriceOrSearchCriteria(searchParam,
+                BigDecimal.valueOf(lower),
+                BigDecimal.valueOf(upper)));
+        model.addAttribute("searchParam" , searchParam);
+        model.addAttribute( "lower", lower);
+        model.addAttribute( "upper", upper);
+
+        return "product_list";
+    }
 
     //TODO: C -> Create
     @GetMapping("/add")
-    public String addProductForm(Model model){
+    public String addProduct(Model model){
         model.addAttribute("productLines" , getProductLines());
         return "product_add";
     }
@@ -70,7 +83,7 @@ public class ProductController {
         productService.updateProduct(product);
         response.sendRedirect("/products");
     }
-
+    //TODO: D -> Delete
     @GetMapping("/delete")
     public String deleteProductById(@RequestParam String productCode, Model model){
         Product product = productService.deleteProduct(productCode);
@@ -80,19 +93,5 @@ public class ProductController {
     }
 
 
-
-    @GetMapping("/searchByContentOrPrice")
-    public String search(@RequestParam(required = false) String searchParam,
-                         @RequestParam(defaultValue = "10.0") Double lower,
-                         @RequestParam(defaultValue = "9999.99") Double upper, Model model) {
-        model.addAttribute("products", productService.findProductsByPriceOrSearchCriteria(searchParam,
-                BigDecimal.valueOf(lower),
-                BigDecimal.valueOf(upper)));
-        model.addAttribute("searchParam" , searchParam);
-        model.addAttribute( "lower", lower);
-        model.addAttribute( "upper", upper);
-
-        return "product_list";
-    }
 
 }

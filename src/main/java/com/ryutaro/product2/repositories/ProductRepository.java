@@ -7,8 +7,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, String> {
-    Product findProductByProductCode(String productCode);
-
     List<Product> findProductsByBuyPriceBetweenOrProductNameContainingOrProductCodeContainingOrProductDescriptionContainingOrderByBuyPrice(
             BigDecimal lower, BigDecimal upper,
             String productName, String productCode, String productDescription
